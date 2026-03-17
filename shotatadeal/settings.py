@@ -6,8 +6,12 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'change-me')
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+_secret_key = os.getenv('SECRET_KEY')
+if not _secret_key or _secret_key == 'change-me':
+    raise RuntimeError('SECRET_KEY environment variable is not set or is using the default value.')
+SECRET_KEY = _secret_key
+
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 INSTALLED_APPS = [
@@ -61,6 +65,7 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_PASSWORD', ''),
         'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': os.getenv('DB_PORT', '5432'),
+        'CONN_MAX_AGE': 60,
         'OPTIONS': {
             'sslmode': 'require',
         },
@@ -97,6 +102,23 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/accounts/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
 
+# Security — only enforced when DEBUG=False (production)
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    CSRF_COOKIE_HTTPONLY = True
+    X_FRAME_OPTIONS = 'DENY'
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SESSION_COOKIE_AGE = 3600
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 # Supabase
 SUPABASE_URL = os.getenv('SUPABASE_URL')
 SUPABASE_PUBLISHABLE_KEY = os.getenv('SUPABASE_PUBLISHABLE_KEY')
@@ -124,6 +146,6 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@shotatadeal.com')
 # Submission
 SUBMISSION_FEE = float(os.getenv('SUBMISSION_FEE', '100.00'))
 
-# File upload limits
-FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50MB
-DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50MB
+# File upload — keep small files in memory, stream large files to disk
+FILE_UPLOAD_MAX_MEMORY_SIZE = 2621440   # 2.5MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 2621440   # 2.5MB
