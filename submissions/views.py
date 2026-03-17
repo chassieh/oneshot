@@ -5,8 +5,33 @@ from django.conf import settings
 from .forms import SubmissionForm
 from .models import Submission, Payment
 import stripe
+import requests as http_requests
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+def _get_paypal_access_token():
+    mode = getattr(settings, 'PAYPAL_MODE', 'sandbox')
+    base = 'https://api-m.paypal.com' if mode == 'live' else 'https://api-m.sandbox.paypal.com'
+    resp = http_requests.post(
+        f'{base}/v1/oauth2/token',
+        auth=(settings.PAYPAL_CLIENT_ID, settings.PAYPAL_CLIENT_SECRET),
+        data={'grant_type': 'client_credentials'},
+        timeout=10,
+    )
+    resp.raise_for_status()
+    return resp.json()['access_token'], base
+
+
+def _verify_paypal_order(order_id):
+    token, base = _get_paypal_access_token()
+    resp = http_requests.get(
+        f'{base}/v2/checkout/orders/{order_id}',
+        headers={'Authorization': f'Bearer {token}'},
+        timeout=10,
+    )
+    resp.raise_for_status()
+    return resp.json()
 
 
 @login_required
@@ -109,19 +134,36 @@ def paypal_success(request, pk):
     submission = get_object_or_404(Submission, pk=pk, artist=request.user)
     order_id = request.GET.get('order_id')
     if order_id and not submission.payment_completed:
-        submission.payment_completed = True
-        submission.save()
-        Payment.objects.get_or_create(
-            submission=submission,
-            defaults={
-                'user': request.user,
-                'amount': settings.SUBMISSION_FEE,
-                'method': Payment.METHOD_PAYPAL,
-                'status': Payment.STATUS_COMPLETED,
-                'transaction_id': order_id,
-            }
-        )
-        messages.success(request, 'PayPal payment successful! Your submission is now under review.')
+        try:
+            order = _verify_paypal_order(order_id)
+            if order.get('status') != 'COMPLETED':
+                messages.error(request, 'PayPal payment was not completed.')
+                return redirect('submissions:checkout', pk=pk)
+            paid_amount = sum(
+                float(unit['amount']['value'])
+                for purchase in order.get('purchase_units', [])
+                for unit in [purchase.get('amount', {})]
+            )
+            expected = float(settings.SUBMISSION_FEE)
+            if paid_amount < expected:
+                messages.error(request, 'PayPal payment amount does not match the submission fee.')
+                return redirect('submissions:checkout', pk=pk)
+            submission.payment_completed = True
+            submission.save()
+            Payment.objects.get_or_create(
+                submission=submission,
+                defaults={
+                    'user': request.user,
+                    'amount': settings.SUBMISSION_FEE,
+                    'method': Payment.METHOD_PAYPAL,
+                    'status': Payment.STATUS_COMPLETED,
+                    'transaction_id': order_id,
+                }
+            )
+            messages.success(request, 'PayPal payment successful! Your submission is now under review.')
+        except Exception as e:
+            messages.error(request, f'Could not verify PayPal payment: {str(e)}')
+            return redirect('submissions:checkout', pk=pk)
     return redirect('submissions:detail', pk=pk)
 
 
