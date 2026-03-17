@@ -1,0 +1,24 @@
+body { background-color: #f8f9fa; }
+.navbar-brand { font-size: 1.4rem; letter-spacing: -0.5px; }
+.hero-section { padding: 100px 0; }
+.card { border-radius: 12px; }
+input[type=text], input[type=email], input[type=password], input[type=url],
+select, textarea, input[type=file] {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: .375rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #f5a623;
+    box-shadow: 0 0 0 0.2rem rgba(245,166,35,.15);
+}
+audio { border-radius: 8px; }
+.badge { font-size: .8rem; }

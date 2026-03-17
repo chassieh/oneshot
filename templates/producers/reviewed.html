@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Reviewed Submissions - Shot at a Deal{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">Reviewed Submissions</h2>
+        <a href="{% url 'producers:dashboard' %}" class="btn btn-outline-secondary">← Back to Queue</a>
+    </div>
+    {% if reviewed %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr><th>Song Title</th><th>Artist</th><th>Genre</th><th>Decision</th><th>Reviewed</th><th></th></tr>
+                </thead>
+                <tbody>
+                    {% for sub in reviewed %}
+                    <tr>
+                        <td class="fw-semibold">{{ sub.song_title }}</td>
+                        <td>{{ sub.artist_name }}</td>
+                        <td><span class="badge bg-secondary">{{ sub.genre.name }}</span></td>
+                        <td>
+                            {% if sub.status == 'selected' %}
+                                <span class="badge bg-success">Selected</span>
+                            {% else %}
+                                <span class="badge bg-danger">Not Selected</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted small">{{ sub.reviewed_at|date:"M d, Y" }}</td>
+                        <td><a href="{% url 'producers:review' pk=sub.pk %}" class="btn btn-sm btn-outline-dark">View</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-muted">No reviewed submissions yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

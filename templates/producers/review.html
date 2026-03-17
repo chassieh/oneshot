@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Review Submission - Shot at a Deal{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <a href="{% url 'producers:dashboard' %}" class="btn btn-sm btn-outline-secondary mb-4">← Back to Queue</a>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="fw-bold mb-0">{{ submission.song_title }}</h3>
+                    <p class="text-muted mb-3">by {{ submission.artist_name }} • {{ submission.genre.name }}</p>
+                    {% if submission.description %}
+                        <p><strong>Artist Note:</strong> {{ submission.description }}</p>
+                    {% endif %}
+                    <div class="mt-3">
+                        <strong>Audio File:</strong>
+                        <audio controls class="w-100 mt-2">
+                            <source src="{{ submission.audio_file.url }}">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <hr>
+                    <div class="row g-2 text-muted small">
+                        <div class="col-md-4"><strong>Artist:</strong> {{ submission.artist.get_full_name|default:submission.artist.username }}</div>
+                        <div class="col-md-4"><strong>Email:</strong> {{ submission.artist.email }}</div>
+                        <div class="col-md-4"><strong>Location:</strong> {{ submission.artist.city }}{% if submission.artist.city and submission.artist.state %}, {% endif %}{{ submission.artist.state }}</div>
+                        {% if submission.artist.soundcloud_url %}<div class="col-md-4"><a href="{{ submission.artist.soundcloud_url }}" target="_blank">SoundCloud</a></div>{% endif %}
+                        {% if submission.artist.spotify_url %}<div class="col-md-4"><a href="{{ submission.artist.spotify_url }}" target="_blank">Spotify</a></div>{% endif %}
+                        {% if submission.artist.portfolio_url %}<div class="col-md-4"><a href="{{ submission.artist.portfolio_url }}" target="_blank">Portfolio</a></div>{% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Your Decision</h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Notes (internal)</label>
+                            <textarea name="notes" class="form-control" rows="4" placeholder="Your notes about this submission...">{{ submission.producer_notes }}</textarea>
+                        </div>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button type="submit" name="decision" value="selected" class="btn btn-success px-4 fw-bold">
+                                <i class="fas fa-trophy me-1"></i> Select This Artist
+                            </button>
+                            <button type="submit" name="decision" value="not_selected" class="btn btn-danger px-4">
+                                Not Selected
+                            </button>
+                            <button type="submit" name="decision" value="under_review" class="btn btn-outline-secondary px-4">
+                                Save Notes & Keep Under Review
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

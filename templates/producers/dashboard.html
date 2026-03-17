@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Producer Dashboard - Shot at a Deal{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0">Producer Dashboard</h2>
+            <p class="text-muted">Welcome, {{ user.get_full_name|default:user.username }} — {{ profile.genres.all|join:", " }}</p>
+        </div>
+        <a href="{% url 'producers:reviewed' %}" class="btn btn-outline-secondary">View Reviewed</a>
+    </div>
+
+    <h5 class="fw-bold mb-3">New Submissions <span class="badge bg-warning text-dark">{{ pending.count }}</span></h5>
+    {% if pending %}
+        <div class="table-responsive mb-5">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr><th>Song Title</th><th>Artist</th><th>Genre</th><th>Submitted</th><th></th></tr>
+                </thead>
+                <tbody>
+                    {% for sub in pending %}
+                    <tr>
+                        <td class="fw-semibold">{{ sub.song_title }}</td>
+                        <td>{{ sub.artist_name }}</td>
+                        <td><span class="badge bg-secondary">{{ sub.genre.name }}</span></td>
+                        <td class="text-muted small">{{ sub.submitted_at|date:"M d, Y" }}</td>
+                        <td><a href="{% url 'producers:review' pk=sub.pk %}" class="btn btn-sm btn-warning">Review</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-muted mb-5">No new submissions in your queue.</p>
+    {% endif %}
+
+    <h5 class="fw-bold mb-3">Currently Under Review <span class="badge bg-info">{{ under_review.count }}</span></h5>
+    {% if under_review %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr><th>Song Title</th><th>Artist</th><th>Genre</th><th>Submitted</th><th></th></tr>
+                </thead>
+                <tbody>
+                    {% for sub in under_review %}
+                    <tr>
+                        <td class="fw-semibold">{{ sub.song_title }}</td>
+                        <td>{{ sub.artist_name }}</td>
+                        <td><span class="badge bg-secondary">{{ sub.genre.name }}</span></td>
+                        <td class="text-muted small">{{ sub.submitted_at|date:"M d, Y" }}</td>
+                        <td><a href="{% url 'producers:review' pk=sub.pk %}" class="btn btn-sm btn-outline-info">Continue Review</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-muted">No submissions currently under review.</p>
+    {% endif %}
+</div>
+{% endblock %}

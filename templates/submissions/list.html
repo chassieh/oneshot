@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}My Submissions - Shot at a Deal{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">My Submissions</h2>
+        <a href="{% url 'submissions:submit' %}" class="btn btn-warning fw-bold">
+            <i class="fas fa-plus me-1"></i> New Submission
+        </a>
+    </div>
+    {% if submissions %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr><th>Song</th><th>Genre</th><th>Status</th><th>Payment</th><th>Date</th><th></th></tr>
+                </thead>
+                <tbody>
+                    {% for sub in submissions %}
+                    <tr>
+                        <td><strong>{{ sub.song_title }}</strong><br><small class="text-muted">{{ sub.artist_name }}</small></td>
+                        <td><span class="badge bg-secondary">{{ sub.genre.name }}</span></td>
+                        <td>
+                            {% if sub.status == 'selected' %}<span class="badge bg-success">Selected</span>
+                            {% elif sub.status == 'not_selected' %}<span class="badge bg-danger">Not Selected</span>
+                            {% elif sub.status == 'under_review' %}<span class="badge bg-info">Under Review</span>
+                            {% else %}<span class="badge bg-warning text-dark">Pending</span>{% endif %}
+                        </td>
+                        <td>{% if sub.payment_completed %}<span class="text-success"><i class="fas fa-check"></i></span>{% else %}<a href="{% url 'submissions:checkout' pk=sub.pk %}" class="btn btn-sm btn-danger">Pay</a>{% endif %}</td>
+                        <td class="text-muted small">{{ sub.submitted_at|date:"M d, Y" }}</td>
+                        <td><a href="{% url 'submissions:detail' pk=sub.pk %}" class="btn btn-sm btn-outline-dark">View</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="text-center py-5 text-muted">
+            <i class="fas fa-music fa-3x mb-3 opacity-25"></i>
+            <p>No submissions yet.</p>
+            <a href="{% url 'submissions:submit' %}" class="btn btn-warning">Submit Your First Song</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

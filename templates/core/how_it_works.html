@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}How It Works - Shot at a Deal{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="fw-bold mb-2">How It Works</h1>
+            <p class="text-muted mb-5">Shot at a Deal is a direct bridge between independent artists and top USA music producers. Here is exactly what happens when you submit.</p>
+            <div class="d-flex mb-4">
+                <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center me-4 flex-shrink-0" style="width:50px;height:50px;"><strong>1</strong></div>
+                <div>
+                    <h5 class="fw-bold">Create a Free Account</h5>
+                    <p class="text-muted">Sign up with your name, email, and a password. Creating an account is completely free. Fill in your artist profile including optional links to SoundCloud, Spotify, YouTube, Instagram, and more.</p>
+                </div>
+            </div>
+            <div class="d-flex mb-4">
+                <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center me-4 flex-shrink-0" style="width:50px;height:50px;"><strong>2</strong></div>
+                <div>
+                    <h5 class="fw-bold">Submit Your Best Song</h5>
+                    <p class="text-muted">Upload one original song per submission. We accept WAV, MP3, FLAC, and AIFF files up to 50MB. Choose your genre (Rock or Country) and include a brief description. A <strong>$100 submission fee</strong> applies per song — this ensures only serious, high-quality work reaches our producers.</p>
+                </div>
+            </div>
+            <div class="d-flex mb-4">
+                <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center me-4 flex-shrink-0" style="width:50px;height:50px;"><strong>3</strong></div>
+                <div>
+                    <h5 class="fw-bold">Pay the Submission Fee</h5>
+                    <p class="text-muted">Complete payment via Stripe (credit/debit card), PayPal, or Wise bank transfer. Your submission enters the producer review queue only after payment is confirmed.</p>
+                </div>
+            </div>
+            <div class="d-flex mb-4">
+                <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center me-4 flex-shrink-0" style="width:50px;height:50px;"><strong>4</strong></div>
+                <div>
+                    <h5 class="fw-bold">Producer Reviews Your Music</h5>
+                    <p class="text-muted">Your submission is matched to a genre-appropriate producer. For <strong>Rock</strong>, your music reaches a producer from Jon Bon Jovi's team. For <strong>Country</strong>, two established Nashville-connected producers review your work. They listen, evaluate, and make their decision.</p>
+                </div>
+            </div>
+            <div class="d-flex mb-4">
+                <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center me-4 flex-shrink-0" style="width:50px;height:50px;"><strong>5</strong></div>
+                <div>
+                    <h5 class="fw-bold">Get Notified</h5>
+                    <p class="text-muted">You can track your submission status in real time on your dashboard. When a decision is made, you will be notified. Selected artists receive official outreach via multiple channels.</p>
+                </div>
+            </div>
+            <div class="d-flex mb-5">
+                <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-4 flex-shrink-0" style="width:50px;height:50px;color:white;"><i class="fas fa-star"></i></div>
+                <div>
+                    <h5 class="fw-bold">Selected Artists Get an Interview</h5>
+                    <p class="text-muted">If selected, you will be invited to a direct interview with the producer. This is a genuine opportunity at a record deal — not just feedback or exposure.</p>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="{% url 'accounts:register' %}" class="btn btn-warning btn-lg fw-bold px-5">Start Your Submission</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

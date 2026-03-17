@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %}My Dashboard - Shot at a Deal{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center gap-3">
+            {% if user.profile_photo %}
+                <img src="{{ user.profile_photo.url }}" width="80" class="rounded-circle">
+            {% endif %}
+            <div>
+                <h2 class="fw-bold mb-0">My Dashboard</h2>
+                <p class="text-muted mb-0">Welcome back, {{ user.first_name|default:user.username }}</p>
+            </div>
+        </div>
+        <a href="{% url 'submissions:submit' %}" class="btn btn-warning fw-bold">
+            <i class="fas fa-plus me-1"></i> Submit a Song
+        </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="fs-2 fw-bold text-warning">{{ submissions.count }}</div>
+                <div class="text-muted small">Total Submissions</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="fs-2 fw-bold text-info">{{ submissions|length }}</div>
+                <div class="text-muted small">Under Review</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="fs-2 fw-bold text-success">
+                    {% for s in submissions %}{% if s.status == 'selected' %}+1{% endif %}{% endfor %}0
+                </div>
+                <div class="text-muted small">Selected</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary w-100">
+                    <i class="fas fa-user-edit me-1"></i> Edit Profile
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="fw-bold mb-3">My Submissions</h4>
+    {% if submissions %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Song Title</th>
+                        <th>Artist Name</th>
+                        <th>Genre</th>
+                        <th>Status</th>
+                        <th>Payment</th>
+                        <th>Submitted</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sub in submissions %}
+                    <tr>
+                        <td class="fw-semibold">{{ sub.song_title }}</td>
+                        <td>{{ sub.artist_name }}</td>
+                        <td><span class="badge bg-secondary">{{ sub.genre.name }}</span></td>
+                        <td>
+                            {% if sub.status == 'selected' %}
+                                <span class="badge bg-success">Selected</span>
+                            {% elif sub.status == 'not_selected' %}
+                                <span class="badge bg-danger">Not Selected</span>
+                            {% elif sub.status == 'under_review' %}
+                                <span class="badge bg-info">Under Review</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if sub.payment_completed %}
+                                <span class="badge bg-success"><i class="fas fa-check"></i> Paid</span>
+                            {% else %}
+                                <a href="{% url 'submissions:checkout' pk=sub.pk %}" class="badge bg-danger text-decoration-none">Pay Now</a>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted small">{{ sub.submitted_at|date:"M d, Y" }}</td>
+                        <td><a href="{% url 'submissions:detail' pk=sub.pk %}" class="btn btn-sm btn-outline-dark">View</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="text-center py-5 text-muted">
+            <i class="fas fa-music fa-3x mb-3 opacity-25"></i>
+            <p>You haven't submitted any songs yet.</p>
+            <a href="{% url 'submissions:submit' %}" class="btn btn-warning">Submit Your First Song</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

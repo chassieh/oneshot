@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Shot at a Deal - Your Chance at a Record Deal{% endblock %}
+{% block content %}
+<section class="hero-section text-white text-center py-5" style="background: linear-gradient(135deg, rgba(26,26,46,0.7) 0%, rgba(15,52,96,0.7) 100%), url('/static/css/saad-hero.png') center center / cover no-repeat; min-height: 80vh; display:flex; align-items:center;">
+    <div class="container">
+        <h1 class="display-3 fw-bold mb-3">Your <span style="color:#f5a623;">Shot at a Deal</span></h1>
+        <p class="lead mb-4 fs-4">Submit your best original music directly to top American music producers.<br>Rock & Country genres. One song. One chance. Make it count.</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{% url 'accounts:register' %}" class="btn btn-warning btn-lg px-5 fw-bold">Submit Your Music  <i class="fas fa-arrow-right"></i></a>
+            <a href="{% url 'core:how_it_works' %}" class="btn btn-outline-light btn-lg px-5">How It Works</a>
+        </div>
+        <p class="mt-4 text-light opacity-75"><i class="fas fa-lock me-1"></i> $100 per submission • Reviewed by industry professionals</p>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5">Why Shot at a Deal?</h2>
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm p-4">
+                    <i class="fas fa-star fa-3x text-warning mb-3"></i>
+                    <h5 class="fw-bold">Real Producers</h5>
+                    <p class="text-muted">Your music lands directly in the hands of legitimate USA music industry producers, including talent from Jon Bon Jovi's camp.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm p-4">
+                    <i class="fas fa-guitar fa-3x text-warning mb-3"></i>
+                    <h5 class="fw-bold">Rock & Country</h5>
+                    <p class="text-muted">Currently accepting Rock and Country submissions. Genre-matched producers ensure your music is heard by the right ears.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm p-4">
+                    <i class="fas fa-handshake fa-3x text-warning mb-3"></i>
+                    <h5 class="fw-bold">Real Opportunity</h5>
+                    <p class="text-muted">Selected artists receive a direct interview with the producer. This is a genuine shot at a record deal, not just exposure.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-3 text-center">
+                <div class="rounded-circle bg-warning d-inline-flex align-items-center justify-content-center mb-3" style="width:60px;height:60px;">
+                    <span class="fw-bold fs-4">1</span>
+                </div>
+                <h6 class="fw-bold">Create Account</h6>
+                <p class="text-muted small">Sign up free. Fill in your artist profile with your links and bio.</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="rounded-circle bg-warning d-inline-flex align-items-center justify-content-center mb-3" style="width:60px;height:60px;">
+                    <span class="fw-bold fs-4">2</span>
+                </div>
+                <h6 class="fw-bold">Submit Your Song</h6>
+                <p class="text-muted small">Upload your best original WAV or MP3. $100 submission fee applies.</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="rounded-circle bg-warning d-inline-flex align-items-center justify-content-center mb-3" style="width:60px;height:60px;">
+                    <span class="fw-bold fs-4">3</span>
+                </div>
+                <h6 class="fw-bold">Producer Reviews</h6>
+                <p class="text-muted small">Your submission goes directly to a genre-matched industry producer for review.</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="rounded-circle bg-warning d-inline-flex align-items-center justify-content-center mb-3" style="width:60px;height:60px;">
+                    <span class="fw-bold fs-4">4</span>
+                </div>
+                <h6 class="fw-bold">Get the Call</h6>
+                <p class="text-muted small">Selected artists are contacted for an interview with the producer. Your deal awaits.</p>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'accounts:register' %}" class="btn btn-dark btn-lg px-5">Get Started Today</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

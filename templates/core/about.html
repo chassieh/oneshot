@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}About - Shot at a Deal{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="fw-bold mb-2">About Shot at a Deal</h1>
+            <p class="lead text-muted mb-5">We exist to give talented independent artists a direct, legitimate path to the people who can change their lives.</p>
+            <p>The music industry has always been about who you know. Shot at a Deal changes that. We connect independent artists in the USA directly with real, working music producers — no gatekeepers, no label politics, no pay-to-play schemes disguised as contests.</p>
+            <p>We currently serve two genres: <strong>Rock</strong> and <strong>Country</strong>. Our Rock submissions are reviewed by a producer from Jon Bon Jovi's team. Our Country submissions go to two established producers with deep roots in the American country music scene.</p>
+            <p>The $100 submission fee is not a money grab. It is a quality filter. It ensures that every song in our producer's queue represents an artist's best, most serious work — not a rough demo or a throwaway track. It also covers the real costs of bandwidth, storage, and platform operations.</p>
+            <h4 class="fw-bold mt-5 mb-3">Our Promise</h4>
+            <ul class="list-unstyled">
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Every paid submission is listened to by a real producer.</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Selected artists receive a direct interview with the producer.</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> We will never sell or share your music without your consent.</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Your submission status is always visible on your dashboard.</li>
+            </ul>
+            <div class="text-center mt-5">
+                <a href="{% url 'accounts:register' %}" class="btn btn-warning btn-lg fw-bold px-5">Get Your Shot</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+[Unit]
+Description=Shot at a Deal - Gunicorn
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/shotatadeal
+EnvironmentFile=/var/www/shotatadeal/.env
+ExecStart=/var/www/shotatadeal/venv/bin/gunicorn \
+    --workers 3 \
+    --bind unix:/run/gunicorn/shotatadeal.sock \
+    shotatadeal.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+RuntimeDirectory=gunicorn
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

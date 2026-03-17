@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile - Shot at a Deal{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="fw-bold mb-4">Edit Profile</h2>
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">First Name</label>
+                                {{ form.first_name }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Last Name</label>
+                                {{ form.last_name }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Email</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Bio</label>
+                                {{ form.bio }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">City</label>
+                                {{ form.city }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">State</label>
+                                {{ form.state }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Profile Photo</label>
+                                {{ form.profile_photo }}
+                                {% if form.profile_photo.errors %}
+                                    <div class="text-danger small mt-1">{{ form.profile_photo.errors.0 }}</div>
+                                {% endif %}
+                                {% if user.profile_photo %}
+                                    <div class="mt-2"><img src="{{ user.profile_photo.url }}" width="80" class="rounded-circle"></div>
+                                {% endif %}
+                            </div>
+                            <div class="col-12"><hr><h6 class="fw-bold text-muted">Optional Links</h6></div>
+                            <div class="col-md-6">
+                                <label class="form-label">SoundCloud URL</label>
+                                {{ form.soundcloud_url }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Spotify URL</label>
+                                {{ form.spotify_url }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">YouTube URL</label>
+                                {{ form.youtube_url }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Instagram URL</label>
+                                {{ form.instagram_url }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Facebook URL</label>
+                                {{ form.facebook_url }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Twitter/X URL</label>
+                                {{ form.twitter_url }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Portfolio URL</label>
+                                {{ form.portfolio_url }}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Website</label>
+                                {{ form.website }}
+                            </div>
+                        </div>
+                        <div class="mt-4 d-flex gap-2">
+                            <button type="submit" class="btn btn-warning fw-bold px-4">Save Profile</button>
+                            <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-secondary px-4">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

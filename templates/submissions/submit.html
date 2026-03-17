@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Submit Your Song - Shot at a Deal{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <h2 class="fw-bold mb-1">Submit Your Song</h2>
+            <p class="text-muted mb-4">One song per submission. ${{ fee|floatformat:0 }} fee required to complete submission.</p>
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Song Title *</label>
+                            {{ form.song_title }}
+                            {% if form.song_title.errors %}<div class="text-danger small">{{ form.song_title.errors.0 }}</div>{% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Artist / Stage Name *</label>
+                            {{ form.artist_name }}
+                            {% if form.artist_name.errors %}<div class="text-danger small">{{ form.artist_name.errors.0 }}</div>{% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Genre *</label>
+                            {{ form.genre }}
+                            {% if form.genre.errors %}<div class="text-danger small">{{ form.genre.errors.0 }}</div>{% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">About This Song</label>
+                            {{ form.description }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Audio File * <span class="text-muted fw-normal">(WAV, MP3, FLAC, AIFF — max 50MB)</span></label>
+                            {{ form.audio_file }}
+                            {% if form.audio_file.errors %}<div class="text-danger small">{{ form.audio_file.errors.0 }}</div>{% endif %}
+                        </div>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle me-2"></i>
+                            After uploading, you will be taken to checkout to complete the <strong>${{ fee|floatformat:0 }} submission fee</strong>. Your submission will not enter review until payment is complete.
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100 fw-bold py-2">Continue to Payment →</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
